@@ -1,0 +1,93 @@
+#############################################
+### What will happens in a FORKEE action. ###
+#############################################
+name: GitHub Fork Repo Demo
+
+on:
+  repository:
+  name: IT-WI-Cloud-Operations/bbc-code-repository-template
+  url: https://code.bbraun.io/IT-WI-Cloud-Operations/bbc-code-repository-template
+  workflow_dispatch:
+
+action:
+  forkee:
+    "visibility": {
+      "description": "The repository visibility: public, private, or internal.",
+      "type": "string",
+      "examples": [
+        "public"
+
+
+
+
+
+################################################
+### Add Collaborator team with write rights. ###
+################################################
+name: Add contributors
+on:
+ push:
+   branches:
+     - master
+
+jobs:
+  add-contributors:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: BobAnkh/add-contributors@master
+      with:
+        CONTRIBUTOR: '@IT-WI-Cloud-Operations/core-team'
+        # OR
+        CONTRIBUTOR: 'icklpade' 'gheoca01' 'hanab01' # etc...
+        ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        COMMIT_MESSAGE: 'docs(README): update contributors'
+
+
+
+
+####################################
+### Add Branch protection Rules. ###
+####################################
+name: "Create branch protection rule"
+on: create
+# OR
+on: forkee
+    type:
+      - internal
+
+jobs:
+  test: # Test functionality
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ./
+      with: 
+        # PERSONAL-ACCESS-TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        BASE-BRANCH-PATTERN: '^feature\/[a-zA-Z0-9]+$'
+        REQUIRE-REVIEW-FROM-CODEOWNERS: 'true'
+        RESTRICTIONS-TEAMS: @IT-WI-Cloud-Operations/core-team
+        DISMISS-STALE-PR-APPROVALS-ON-NEW-COMMITS: 'true'
+        ALLOW-FORCE-PUSHES: 'false'
+        REQUIRED-NUMBER-OF-REVIEWERS: 2
+        REQUIRED-STATUS-CHECKS: 'build,test'
+        REQUIRE-REVIEW-FROM-CODEOWNERS: 'true'
+        DISMISS-STALE-PR-APPROVALS-ON-NEW-COMMITS: 'true'
+        REQUIRE-LINEAR-HISTORY: 'true'
+        ALLOW-FORCE-PUSHES: 'true'
+        ALLOW-DELETIONS: 'true'
+        INCLUDE-ADMINISTRATORS: 'true'
+
+
+
+
+
+
+
+
+################################
+### Add autolink references. ###
+################################
+
+
+
