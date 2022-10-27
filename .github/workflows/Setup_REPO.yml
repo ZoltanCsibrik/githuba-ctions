@@ -1,6 +1,8 @@
 #############################################
+###             SECTION_01                ###
 ### What will happens in a FORKEE action. ###
 #############################################
+
 name: GitHub Fork Repo Demo
 
 on:
@@ -18,17 +20,19 @@ action:
         "public"
 
 
-
-
-
 ################################################
+###             SECTION_02                   ###
 ### Add Collaborator team with write rights. ###
 ################################################
+
 name: Add contributors
 on:
  push:
    branches:
      - master
+
+    # needs: [build]
+    # for set up dependency
 
 jobs:
   add-contributors:
@@ -44,11 +48,11 @@ jobs:
         COMMIT_MESSAGE: 'docs(README): update contributors'
 
 
-
-
 ####################################
+###         SECTION_03           ###
 ### Add Branch protection Rules. ###
 ####################################
+
 name: "Create branch protection rule"
 on: create
 # OR
@@ -79,15 +83,11 @@ jobs:
         INCLUDE-ADMINISTRATORS: 'true'
 
 
-
-
-
-
-
-
 ################################
+###       SECTION_04         ###
 ### Add autolink references. ###
 ################################
 
+name: "Add Jira linking"
 
 
